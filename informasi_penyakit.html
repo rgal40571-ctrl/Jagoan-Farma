@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jagoan Farma — Penyakit Unggas, Nutrisi & Kalkulator Dosis</title>
+    <style>
+        :root {
+            --bg: #f6f4ef; --surface: #ffffff; --ink: #172521; --muted: #5b6863;
+            --accent: #1e4d3b; --accent-dark: #133327; --accent-soft: #e6efe9;
+            --gold: #c88a2b; --gold-soft: #fdf3e2; --border: #e3dfd5;
+            --shadow: 0 10px 28px rgba(23, 37, 33, 0.06);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.7; }
+        a { color: inherit; text-decoration: none; }
+        .promo-bar { background: var(--accent-dark); color: #f4efe4; text-align: center; font-size: 0.84rem; padding: 8px 14px; font-weight: 600; }
+        .promo-bar span { color: #f0be6b; }
+        .wrap { max-width: 1020px; margin: 0 auto; padding: 20px 18px 64px; }
+        .topbar {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px;
+            padding: 14px 20px; background: var(--surface); border: 1px solid var(--border);
+            border-radius: 18px; margin-bottom: 22px; box-shadow: var(--shadow);
+        }
+        .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 1.22rem; color: var(--accent); }
+        .brand-badge { width: 34px; height: 34px; border-radius: 10px; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 0.95rem; }
+        .brand span { color: var(--gold); }
+        .nav { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+        .nav a { padding: 7px 13px; border-radius: 999px; font-size: 0.89rem; font-weight: 600; color: var(--muted); }
+        .nav a:hover, .nav a.active { background: var(--accent-soft); color: var(--accent); }
+        .curr-btn { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--gold); background: var(--gold-soft); color: #8c5a10; font-weight: 800; font-size: 0.82rem; cursor: pointer; }
+
+        .page-hero {
+            border-radius: 22px; overflow: hidden; margin-bottom: 22px; color: #fff; padding: 32px 28px;
+            background: linear-gradient(100deg, rgba(19, 51, 39, 0.93) 0%, rgba(30, 77, 59, 0.82) 60%, rgba(23, 37, 33, 0.55) 100%),
+                        url('https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            box-shadow: var(--shadow);
+        }
+        .page-hero h1 { font-size: clamp(1.5rem, 3vw, 2.05rem); margin-bottom: 8px; }
+        .page-hero p { color: #e2ede7; max-width: 640px; }
+
+        .info-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 22px; padding: 24px; margin-bottom: 22px; box-shadow: var(--shadow); }
+        .info-panel h2 { font-size: 1.15rem; margin: 14px 0 6px; color: var(--accent); }
+        .info-panel h2:first-child { margin-top: 0; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 6px; }
+
+        .plugin-box { background: var(--surface); border: 2px solid #e5d2ad; border-radius: 22px; padding: 26px; box-shadow: var(--shadow); }
+        .pill-gold { display: inline-block; background: var(--gold-soft); color: #9c6615; padding: 4px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 800; margin-bottom: 10px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 14px 0 18px; }
+        label { display: block; font-weight: 700; font-size: 0.88rem; margin-bottom: 5px; }
+        select, input { width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid #d5cfc2; font-size: 0.95rem; background: #fcfbf8; }
+        .btn { padding: 10px 16px; border-radius: 12px; border: none; font-weight: 700; font-size: 0.92rem; cursor: pointer; }
+        .btn-green { background: var(--accent); color: #fff; }
+        .btn-gold { background: var(--gold); color: #fff; }
+        .result { margin-top: 18px; padding: 18px; border-radius: 16px; background: #f2f7f4; border: 1px solid #c9dfd2; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+        .result img { width: 92px; height: 92px; border-radius: 14px; object-fit: cover; }
+        .price { font-size: 1.15rem; font-weight: 800; color: #b4690e; margin: 8px 0 10px; }
+        .toast { margin-top: 8px; font-size: 0.88rem; font-weight: 700; color: var(--accent); min-height: 20px; }
+    </style>
+</head>
+<body>
+<div class="promo-bar">
+    Kenali Gejala Dini & Takaran Tepat • <span>Isolasi Unggas Bergejala & Sesuaikan Dosis dengan Bobot</span>
+</div>
+
+<div class="wrap">
+    <header class="topbar">
+        <a href="beranda.html" class="brand"><div class="brand-badge">JF</div><div>JAGOAN<span>FARMA</span></div></a>
+        <nav class="nav">
+            <a href="beranda.html">Beranda</a>
+            <a href="katalog.html">Katalog Obat</a>
+            <a href="panduan_rawatan.html">Rawatan & Luka</a>
+            <a href="informasi_penyakit.html" class="active">Penyakit & Nutrisi</a>
+            <a href="checkout.html" id="navCartLink">Keranjang (0)</a>
+            <button type="button" class="curr-btn" id="currToggle" onclick="toggleCurrency()">IDR (Rp)</button>
+        </nav>
+    </header>
+
+    <section class="page-hero">
+        <h1>Ngorok (CRD), Snot, Nutrisi Tulang/Otot & Pencernaan</h1>
+        <p>Deteksi cepat gejala pernapasan dan pastikan asupan vitamin/mineral harian agar performa unggas tetap stabil.</p>
+    </section>
+
+    <section class="info-panel">
+        <h2>Ngorok (CRD) vs Snot / Pilek Menular</h2>
+        <ul>
+            <li><strong>Ngorok (CRD):</strong> Suara nafas berbunyi/berat tanpa bengkak mencolok pada wajah; perlu penanganan dini agar nafsu makan tidak turun.</li>
+            <li><strong>Snot:</strong> Cairan hidung kental berbau, muka/mata bengkak, dan unggas tampak lesu — segera pisahkan ke kandang isolasi.</li>
+        </ul>
+        <h2>Nutrisi Tulang, Otot & Pencernaan</h2>
+        <ul>
+            <li>Vitamin dan mineral pendukung menjaga kepadatan tulang, kekuatan otot, dan metabolisme harian.</li>
+            <li>Pantau kondisi kotoran dan kebersihan tempat pakan/minum agar pencernaan tetap sehat.</li>
+        </ul>
+    </section>
+
+    <section class="plugin-box">
+        <span class="pill-gold">PLUGIN KALKULATOR DOSIS & REKOMENDASI</span>
+        <h2>Hitung Takaran Sesuai Kondisi & Berat</h2>
+        <div class="form-grid">
+            <div>
+                <label for="kondisi">Kondisi / Kebutuhan</label>
+                <select id="kondisi">
+                    <option value="ngorok">Ngorok (CRD) / Pilek (Snot)</option>
+                    <option value="vitamin">Suplemen Daya Tahan & Pertumbuhan</option>
+                    <option value="stamina">Stamina & Nafas Laga</option>
+                    <option value="luka">Pemulihan Kondisi & Stamina</option>
+                </select>
+            </div>
+            <div>
+                <label for="berat">Berat Unggas (kg)</label>
+                <input type="number" id="berat" value="2.6" min="0.5" max="6" step="0.1">
+            </div>
+            <div>
+                <label for="fase">Fase Pemakaian</label>
+                <select id="fase">
+                    <option value="pemulihan">Pemulihan / Pengobatan</option>
+                    <option value="harian">Rawatan Harian</option>
+                    <option value="laga">Persiapan / Hari Laga</option>
+                </select>
+            </div>
+        </div>
+        <button type="button" class="btn btn-green" onclick="hitungDosis()">Hitung Dosis</button>
+        <div class="result">
+            <img id="fotoObat" src="2.jpeg" alt="Obat Unggas">
+            <div style="flex:1; min-width:230px;">
+                <h3 id="namaObat" style="color:#1e4d3b; margin-bottom:4px;">Obat Ayam Full Power (100 Tablet)</h3>
+                <p id="penjelasanDosis">Fase <strong>pemulihan</strong>: berikan <strong>1 tablet</strong> sesuai aturan pakai selama 3–5 hari (2.6 kg), isolasi ayam bergejala.</p>
+                <div class="price" id="hargaObat">Rp 95.000</div>
+                <button type="button" class="btn btn-gold" onclick="tambahRekomendasiKeKeranjang()">+ Tambah ke Keranjang</button>
+                <a href="checkout.html" style="margin-left:10px; font-weight:700; color:#1e4d3b;">Ke Keranjang & Checkout &rarr;</a>
+                <div class="toast" id="toastMsg"></div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+const KURS_USD = 16000;
+const dataObat = {
+    stamina: { id: "p1", nama: "Suplemen Cair Ternak Ayam 15ml", harga: 135000, beratGram: 120, img: "3.jpeg", aturan: (kg, fase) => fase === "laga" ? `Berikan sekitar <strong>${Math.max(4, Math.round(kg * 1.8))} tetes</strong> langsung ke paruh 30 menit sebelum laga (${kg} kg).` : `Berikan sekitar <strong>${Math.max(2, Math.round(kg * 1))} tetes</strong> pagi hari setelah dijemur (${kg} kg).` },
+    ngorok: { id: "p2", nama: "Obat Ayam Full Power (100 Tablet)", harga: 95000, beratGram: 150, img: "2.jpeg", aturan: (kg, fase) => `Fase <strong>${fase}</strong>: berikan <strong>${kg >= 2.5 ? "1 tablet" : "1/2 tablet"}</strong> sesuai aturan pakai selama 3–5 hari (${kg} kg), isolasi ayam bergejala.` },
+    luka: { id: "p2", nama: "Obat Ayam Full Power (100 Tablet)", harga: 95000, beratGram: 150, img: "2.jpeg", aturan: (kg, fase) => `Fase <strong>${fase}</strong>: berikan <strong>${kg >= 2.5 ? "1 tablet" : "1/2 tablet"}</strong>/hari untuk pemulihan kondisi & daya tahan (${kg} kg).` },
+    vitamin: { id: "p3", nama: "Suplemen Ternak Ayam (12 Tablet)", harga: 45000, beratGram: 80, img: "1.jpeg", aturan: (kg, fase) => `Fase <strong>${fase}</strong>: berikan <strong>${kg >= 2.5 ? "1 tablet" : "1/2 tablet"}</strong> tiap 2 hari untuk daya tahan & pertumbuhan (${kg} kg).` }
+};
+let aktif = dataObat.ngorok;
+
+function formatHarga(rp) {
+    return (localStorage.getItem("jf_currency") || "IDR") === "USD" ? "$" + (rp / KURS_USD).toFixed(2) : "Rp " + rp.toLocaleString("id-ID");
+}
+function toggleCurrency() {
+    localStorage.setItem("jf_currency", (localStorage.getItem("jf_currency") || "IDR") === "IDR" ? "USD" : "IDR");
+    updateBadge(); hitungDosis();
+}
+function updateBadge() {
+    const totalQty = JSON.parse(localStorage.getItem("jf_cart") || "[]").reduce((a, b) => a + b.qty, 0);
+    document.getElementById("navCartLink").textContent = `Keranjang (${totalQty})`;
+    document.getElementById("currToggle").textContent = (localStorage.getItem("jf_currency") || "IDR") === "IDR" ? "IDR (Rp)" : "USD ($)";
+}
+function hitungDosis() {
+    const item = dataObat[document.getElementById("kondisi").value];
+    const berat = parseFloat(document.getElementById("berat").value) || 2.5;
+    const fase = document.getElementById("fase").value;
+    const photos = JSON.parse(localStorage.getItem("jf_custom_photos") || "{}");
+    aktif = item;
+    document.getElementById("fotoObat").src = photos[item.id] || item.img;
+    document.getElementById("namaObat").textContent = item.nama;
+    document.getElementById("penjelasanDosis").innerHTML = item.aturan(berat, fase);
+    document.getElementById("hargaObat").textContent = formatHarga(item.harga);
+    document.getElementById("toastMsg").textContent = "";
+}
+function tambahRekomendasiKeKeranjang() {
+    const cart = JSON.parse(localStorage.getItem("jf_cart") || "[]");
+    const found = cart.find(x => x.id === aktif.id);
+    if (found) found.qty += 1; else cart.push({ id: aktif.id, nama: aktif.nama, harga: aktif.harga, beratGram: aktif.beratGram, qty: 1, catatan: "" });
+    localStorage.setItem("jf_cart", JSON.stringify(cart));
+    updateBadge();
+    document.getElementById("toastMsg").textContent = "✓ Masuk ke keranjang!";
+}
+updateBadge();
+hitungDosis();
+</script>
+</body>
+</html>

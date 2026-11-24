@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jagoan Farma — Rawatan Laga, Luka & Checkout WA</title>
+    <style>
+        :root {
+            --bg: #f6f4ef; --surface: #ffffff; --ink: #172521; --muted: #5b6863;
+            --accent: #1e4d3b; --accent-dark: #133327; --accent-soft: #e6efe9;
+            --gold: #c88a2b; --gold-soft: #fdf3e2; --border: #e3dfd5;
+            --shadow: 0 10px 28px rgba(23, 37, 33, 0.06);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.7; }
+        a { color: inherit; text-decoration: none; }
+        .promo-bar { background: var(--accent-dark); color: #f4efe4; text-align: center; font-size: 0.84rem; padding: 8px 14px; font-weight: 600; }
+        .promo-bar span { color: #f0be6b; }
+        .wrap { max-width: 1020px; margin: 0 auto; padding: 20px 18px 64px; }
+        .topbar {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px;
+            padding: 14px 20px; background: var(--surface); border: 1px solid var(--border);
+            border-radius: 18px; margin-bottom: 22px; box-shadow: var(--shadow);
+        }
+        .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 1.22rem; color: var(--accent); }
+        .brand-badge { width: 34px; height: 34px; border-radius: 10px; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 0.95rem; }
+        .brand span { color: var(--gold); }
+        .nav { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+        .nav a { padding: 7px 13px; border-radius: 999px; font-size: 0.89rem; font-weight: 600; color: var(--muted); }
+        .nav a:hover, .nav a.active { background: var(--accent-soft); color: var(--accent); }
+        .curr-btn { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--gold); background: var(--gold-soft); color: #8c5a10; font-weight: 800; font-size: 0.82rem; cursor: pointer; }
+
+        .page-hero {
+            border-radius: 22px; overflow: hidden; margin-bottom: 22px; color: #fff; padding: 32px 28px;
+            background: linear-gradient(100deg, rgba(19, 51, 39, 0.93) 0%, rgba(30, 77, 59, 0.82) 60%, rgba(23, 37, 33, 0.55) 100%),
+                        url('https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
+            box-shadow: var(--shadow);
+        }
+        .page-hero h1 { font-size: clamp(1.5rem, 3vw, 2.05rem); margin-bottom: 8px; }
+        .page-hero p { color: #e2ede7; max-width: 640px; }
+
+        .info-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 22px; padding: 24px; margin-bottom: 22px; box-shadow: var(--shadow); }
+        .info-panel h2 { font-size: 1.15rem; margin: 14px 0 6px; color: var(--accent); }
+        .info-panel h2:first-child { margin-top: 0; }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 6px; }
+
+        .plugin-box { background: var(--surface); border: 2px solid #e5d2ad; border-radius: 22px; padding: 26px; margin-bottom: 22px; box-shadow: var(--shadow); }
+        .pill-gold { display: inline-block; background: var(--gold-soft); color: #9c6615; padding: 4px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 800; margin-bottom: 10px; }
+        .item-card {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px;
+            padding: 14px; margin-top: 12px; border: 1px solid var(--border); border-radius: 16px; background: #fcfbf8;
+        }
+        .item-left { display: flex; gap: 14px; align-items: center; flex: 1; min-width: 240px; }
+        .item-left img { width: 76px; height: 76px; border-radius: 12px; object-fit: cover; flex-shrink: 0; }
+        .item-meta { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+        .price { font-weight: 800; color: #b4690e; }
+        .grid-form { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; }
+        label { display: block; font-weight: 700; font-size: 0.88rem; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid #d5cfc2; font-size: 0.95rem; background: #fcfbf8; margin-bottom: 12px; }
+        pre { background: #172521; color: #f4f7f5; padding: 16px; border-radius: 14px; white-space: pre-wrap; font-size: 0.88rem; margin: 12px 0 16px; }
+        .btn { padding: 10px 16px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; font-size: 0.92rem; margin-right: 8px; margin-bottom: 8px; }
+        .btn-add { background: var(--accent-soft); color: var(--accent); margin: 0; }
+        .btn-wa { background: #1d9a4c; color: #fff; }
+        .btn-copy { background: var(--gold); color: #fff; }
+        .btn-clear { background: #ece8de; color: var(--ink); }
+        .toast { font-size: 0.88rem; font-weight: 700; color: var(--accent); margin-top: 10px; min-height: 20px; }
+    </style>
+</head>
+<body>
+<div class="promo-bar">
+    Panduan Rawatan Terukur & Pemulihan Cedera • <span>Cek Takaran & Kirim Pesanan Langsung ke WhatsApp</span>
+</div>
+
+<div class="wrap">
+    <header class="topbar">
+        <a href="beranda.html" class="brand"><div class="brand-badge">JF</div><div>JAGOAN<span>FARMA</span></div></a>
+        <nav class="nav">
+            <a href="beranda.html">Beranda</a>
+            <a href="katalog.html">Katalog Obat</a>
+            <a href="panduan_rawatan.html" class="active">Rawatan & Luka</a>
+            <a href="informasi_penyakit.html">Penyakit & Nutrisi</a>
+            <a href="checkout.html" id="navCartLink">Keranjang (0)</a>
+            <button type="button" class="curr-btn" id="currToggle" onclick="toggleCurrency()">IDR (Rp)</button>
+        </nav>
+    </header>
+
+    <section class="page-hero">
+        <h1>Rawatan H-14 Menuju Gelanggang & Pemulihan Luka</h1>
+        <p>Kesiapan fisik ayam petarung tidak dibentuk dalam satu malam. Atur jadwal jemur pagi, latihan bertahap, serta pemulihan otot dan luka luar setelah latihan atau laga.</p>
+    </section>
+
+    <section class="info-panel">
+        <h2>Rawatan Persiapan Laga</h2>
+        <ul>
+            <li><strong>H-14 s.d. H-8:</strong> Jemur pagi secukupnya (30–45 menit), latihan ringan terukur, dan penuhi nutrisi otot/tulang.</li>
+            <li><strong>H-7 s.d. H-1:</strong> Kurangi latihan berat pada H-3 agar otot pulih optimal, serta atur suplemen nafas/stamina sesuai aturan pakai.</li>
+        </ul>
+        <h2>Pemulihan Luka, Memar & Turun Urat</h2>
+        <ul>
+            <li>Bersihkan luka dengan antiseptik lembut, oleskan salep pemulih, dan jaga alas kandang tetap bersih.</li>
+            <li>Jika kaki memar atau indikasi turun urat, beri alas empuk, hindari tenggeran tinggi, dan berikan pemulih sesuai dosis.</li>
+        </ul>
+    </section>
+
+    <section class="plugin-box">
+        <span class="pill-gold">OBAT RAWATAN & PEMULIHAN • TOMBOL TAMBAH</span>
+        <h2>Tambah Obat Rawatan & Luka Langsung ke Pesanan</h2>
+        <div id="rawatanProdukList"></div>
+        <div class="toast" id="toastRawatan"></div>
+    </section>
+
+    <section class="plugin-box">
+        <span class="pill-gold">PLUGIN GENERATOR STRUK & CHECKOUT WHATSAPP</span>
+        <h2>Kirim Format Pesanan Langsung ke WhatsApp</h2>
+        <div class="grid-form">
+            <div>
+                <label for="nama">Nama Pembeli</label>
+                <input type="text" id="nama" placeholder="Contoh: Mas Rama" oninput="updateStruk()">
+            </div>
+            <div>
+                <label for="waAdmin">No. WA Toko (Format 628...)</label>
+                <input type="text" id="waAdmin" value="6281234567890" oninput="updateStruk()">
+            </div>
+        </div>
+        <label for="alamat">Alamat Lengkap Pengiriman</label>
+        <input type="text" id="alamat" placeholder="Jl. ... Kec. ... Kab/Kota ..." oninput="updateStruk()">
+        <div class="grid-form">
+            <div>
+                <label for="bayar">Metode Pembayaran</label>
+                <select id="bayar" onchange="updateStruk()">
+                    <option value="QRIS / E-Wallet">QRIS / E-Wallet (GoPay, OVO, DANA)</option>
+                    <option value="Transfer Bank (BCA/BRI/Mandiri)">Transfer Bank (BCA / BRI / Mandiri)</option>
+                    <option value="COD (Bayar di Tempat)">COD (Bayar di Tempat)</option>
+                </select>
+            </div>
+            <div>
+                <label for="catatan">Catatan Tambahan</label>
+                <input type="text" id="catatan" placeholder="Contoh: Packing dus & bubble tebal" oninput="updateStruk()">
+            </div>
+        </div>
+        <strong>Preview Struk Pesanan:</strong>
+        <pre id="strukPreview"></pre>
+        <button type="button" class="btn btn-wa" onclick="kirimWhatsApp()">Kirim ke WhatsApp</button>
+        <button type="button" class="btn btn-copy" onclick="salinStruk()">Salin Teks</button>
+        <button type="button" class="btn btn-clear" onclick="kosongkanKeranjang()">Kosongkan Keranjang</button>
+    </section>
+</div>
+
+<script>
+const KURS_USD = 16000;
+const produkRawatan = [
+    { id: "p2", nama: "Obat Ayam Full Power (100 Tablet)", harga: 95000, beratGram: 150, img: "2.jpeg", isi: "Isi: 1 botol/kemasan 100 tablet bersegel untuk pemulihan kondisi & daya tahan ternak." },
+    { id: "p1", nama: "Suplemen Cair Ternak Ayam 15ml", harga: 135000, beratGram: 120, img: "3.jpeg", isi: "Isi: Botol suplemen cair 15ml untuk stamina, daya tahan tubuh, dan pertumbuhan ayam." },
+    { id: "p3", nama: "Suplemen Ternak Ayam (12 Tablet)", harga: 45000, beratGram: 80, img: "1.jpeg", isi: "Isi: Tablet suplemen rawatan untuk daya tahan tubuh, pertumbuhan & produktivitas." },
+    { id: "p4", nama: "Calcium + B-Complex (Avibone 10 Kapsul)", harga: 80000, beratGram: 100, img: "4.jpeg", isi: "Isi: 10 kapsul Calcium + B-Complex untuk mencegah penyakit, daya tahan tubuh & mempercepat kesembuhan." }
+];
+
+function formatHarga(rp) {
+    return (localStorage.getItem("jf_currency") || "IDR") === "USD" ? "$" + (rp / KURS_USD).toFixed(2) : "Rp " + rp.toLocaleString("id-ID");
+}
+function toggleCurrency() {
+    localStorage.setItem("jf_currency", (localStorage.getItem("jf_currency") || "IDR") === "IDR" ? "USD" : "IDR");
+    renderAll();
+}
+function getCart() { return JSON.parse(localStorage.getItem("jf_cart") || "[]"); }
+function saveCart(cart) { localStorage.setItem("jf_cart", JSON.stringify(cart)); renderAll(); }
+
+function tambahProdukRawatan(id) {
+    const prod = produkRawatan.find(p => p.id === id);
+    if (!prod) return;
+    const cart = getCart();
+    const ada = cart.find(i => i.id === id);
+    if (ada) ada.qty += 1; else cart.push({ id: prod.id, nama: prod.nama, harga: prod.harga, beratGram: prod.beratGram, qty: 1, catatan: "" });
+    saveCart(cart);
+    document.getElementById("toastRawatan").textContent = `✓ "${prod.nama}" ditambahkan ke struk pesanan di bawah!`;
+}
+
+function renderProdukRawatan() {
+    const photos = JSON.parse(localStorage.getItem("jf_custom_photos") || "{}");
+    document.getElementById("rawatanProdukList").innerHTML = produkRawatan.map(p => `
+        <div class="item-card">
+            <div class="item-left">
+                <img src="${photos[p.id] || p.img}" alt="${p.nama}">
+                <div>
+                    <strong>${p.nama}</strong> — <span class="price">${formatHarga(p.harga)}</span> (${p.beratGram}g)
+                    <div class="item-meta">${p.isi}</div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-add" onclick="tambahProdukRawatan('${p.id}')">+ Tambah</button>
+        </div>
+    `).join("");
+}
+
+function buatTeksOrder() {
+    const cart = getCart();
+    const summary = JSON.parse(localStorage.getItem("jf_order_summary") || '{"subtotal":0,"ongkir":0,"grandTotal":0,"wilayah":"Kirim Pulau Jawa (Rp 15.000/kg)"}');
+    const subtotalHitung = cart.reduce((acc, i) => acc + i.harga * i.qty, 0);
+    const subtotal = subtotalHitung || summary.subtotal || 0;
+    const ongkir = summary.ongkir || 0;
+    const grandTotal = subtotal + ongkir;
+    const nama = document.getElementById("nama").value.trim() || "(Belum diisi)";
+    const alamat = document.getElementById("alamat").value.trim() || "(Belum diisi)";
+    const bayar = document.getElementById("bayar").value;
+    const catatan = document.getElementById("catatan").value.trim() || "-";
+    const daftarItem = cart.length ? cart.map((i, idx) => `${idx + 1}. ${i.nama} (${i.qty}x) = Rp ${(i.harga * i.qty).toLocaleString("id-ID")}`).join("\n") : "- Belum ada item di keranjang -";
+    return [
+        "HALO JAGOAN FARMA, SAYA MAU ORDER:",
+        "----------------------------------",
+        daftarItem,
+        "----------------------------------",
+        `Wilayah: ${summary.wilayah}`,
+        `Subtotal: Rp ${subtotal.toLocaleString("id-ID")}`,
+        `Est. Ongkir: Rp ${ongkir.toLocaleString("id-ID")}`,
+        `TOTAL BAYAR: Rp ${grandTotal.toLocaleString("id-ID")}`,
+        "",
+        `Nama: ${nama}`,
+        `Alamat: ${alamat}`,
+        `Pembayaran: ${bayar}`,
+        `Catatan: ${catatan}`
+    ].join("\n");
+}
+function updateStruk() { document.getElementById("strukPreview").textContent = buatTeksOrder(); }
+function kirimWhatsApp() { window.open(`https://wa.me/${document.getElementById("waAdmin").value.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(buatTeksOrder())}`, "_blank"); }
+function salinStruk() { navigator.clipboard.writeText(buatTeksOrder()); alert("Format pesanan berhasil disalin!"); }
+function kosongkanKeranjang() { localStorage.removeItem("jf_cart"); localStorage.removeItem("jf_order_summary"); renderAll(); }
+
+function renderAll() {
+    const totalQty = getCart().reduce((a, b) => a + b.qty, 0);
+    document.getElementById("navCartLink").textContent = `Keranjang (${totalQty})`;
+    document.getElementById("currToggle").textContent = (localStorage.getItem("jf_currency") || "IDR") === "IDR" ? "IDR (Rp)" : "USD ($)";
+    renderProdukRawatan();
+    updateStruk();
+}
+renderAll();
+</script>
+</body>
+</html>

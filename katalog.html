@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jagoan Farma — Katalog Obat Visual & Keranjang</title>
+    <style>
+        :root {
+            --bg: #f6f4ef; --surface: #ffffff; --ink: #172521; --muted: #5b6863;
+            --accent: #1e4d3b; --accent-soft: #e6efe9; --gold: #c88a2b; --gold-soft: #fdf3e2;
+            --border: #e3dfd5; --shadow: 0 10px 28px rgba(23, 37, 33, 0.06);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.65; }
+        a { color: inherit; text-decoration: none; }
+        .wrap { max-width: 1120px; margin: 0 auto; padding: 22px 18px 64px; }
+        .topbar {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px;
+            padding: 14px 20px; background: var(--surface); border: 1px solid var(--border);
+            border-radius: 18px; margin-bottom: 22px; box-shadow: var(--shadow);
+        }
+        .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 1.22rem; color: var(--accent); }
+        .brand-badge { width: 34px; height: 34px; border-radius: 10px; background: var(--accent); color: #fff; display: grid; place-items: center; font-size: 0.95rem; }
+        .brand span { color: var(--gold); }
+        .nav { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+        .nav a { padding: 7px 13px; border-radius: 999px; font-size: 0.89rem; font-weight: 600; color: var(--muted); }
+        .nav a:hover, .nav a.active { background: var(--accent-soft); color: var(--accent); }
+        .curr-btn { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--gold); background: var(--gold-soft); color: #8c5a10; font-weight: 800; font-size: 0.82rem; cursor: pointer; }
+
+        .layout { display: grid; grid-template-columns: 1.45fr 0.9fr; gap: 22px; align-items: start; }
+        @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+
+        .filter-bar {
+            background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 16px;
+            margin-bottom: 16px; box-shadow: var(--shadow);
+        }
+        .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .chip {
+            padding: 6px 13px; border-radius: 999px; border: 1px solid var(--border); background: #fcfbf8;
+            font-size: 0.84rem; font-weight: 700; color: var(--muted); cursor: pointer;
+        }
+        .chip.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+        input[type="text"], select {
+            width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid #d5cfc2; font-size: 0.94rem; background: #fcfbf8;
+        }
+
+        .prod-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 14px; }
+        .prod-card {
+            background: var(--surface); border: 1px solid var(--border); border-radius: 18px; overflow: hidden;
+            display: flex; flex-direction: column; box-shadow: var(--shadow);
+        }
+        .prod-card img { width: 100%; height: 155px; object-fit: cover; cursor: pointer; }
+        .prod-body { padding: 14px; display: flex; flex-direction: column; flex: 1; }
+        .prod-cat { font-size: 0.72rem; font-weight: 800; color: var(--accent); background: var(--accent-soft); padding: 3px 8px; border-radius: 999px; width: fit-content; margin-bottom: 6px; }
+        .prod-title { font-weight: 800; font-size: 0.98rem; margin-bottom: 4px; cursor: pointer; }
+        .prod-desc { font-size: 0.82rem; color: var(--muted); margin-bottom: 10px; flex: 1; }
+        .price { font-weight: 800; color: #b4690e; }
+        .btn { padding: 8px 12px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; font-size: 0.86rem; }
+        .btn-green { background: var(--accent); color: #fff; }
+        .btn-soft { background: var(--accent-soft); color: var(--accent); }
+        .btn-qty { background: #f1eee6; color: var(--ink); padding: 4px 9px; }
+
+        .cart-panel {
+            background: var(--surface); border: 2px solid #e5d2ad; border-radius: 20px; padding: 20px;
+            position: sticky; top: 18px; box-shadow: var(--shadow);
+        }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 9px 0; border-bottom: 1px solid #efece4; }
+        .summary-line { display: flex; justify-content: space-between; margin: 7px 0; font-size: 0.92rem; }
+        .total-line { display: flex; justify-content: space-between; margin-top: 10px; padding-top: 10px; border-top: 2px solid var(--border); font-size: 1.1rem; font-weight: 800; color: var(--accent); }
+
+        .modal-bg {
+            display: none; position: fixed; inset: 0; background: rgba(15, 25, 21, 0.62);
+            place-items: center; padding: 18px; z-index: 50;
+        }
+        .modal-bg.open { display: grid; }
+        .modal-card {
+            background: var(--surface); max-width: 480px; width: 100%; border-radius: 22px; overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+        }
+        .modal-card img { width: 100%; height: 210px; object-fit: cover; }
+        .modal-body { padding: 20px; }
+    </style>
+</head>
+<body>
+<div class="wrap">
+    <header class="topbar">
+        <a href="beranda.html" class="brand"><div class="brand-badge">JF</div><div>JAGOAN<span>FARMA</span></div></a>
+        <nav class="nav">
+            <a href="beranda.html">Beranda</a>
+            <a href="katalog.html" class="active">Katalog Obat</a>
+            <a href="panduan_rawatan.html">Rawatan & Luka</a>
+            <a href="informasi_penyakit.html">Penyakit & Nutrisi</a>
+            <a href="checkout.html" id="navCartLink">Keranjang (0)</a>
+            <button type="button" class="curr-btn" id="currToggle" onclick="toggleCurrency()">IDR (Rp)</button>
+        </nav>
+    </header>
+
+    <div class="layout">
+        <div>
+            <div class="filter-bar">
+                <input type="text" id="searchInput" placeholder="Cari suplemen cair, obat tablet, vitamin, atau calcium + B-complex..." oninput="renderCatalog()">
+                <div class="chips" id="catChips"></div>
+            </div>
+            <div class="prod-grid" id="catalogGrid"></div>
+        </div>
+
+        <aside class="cart-panel">
+            <h2 style="font-size:1.15rem; color:var(--accent); margin-bottom:4px;">Keranjang Belanja</h2>
+            <p style="font-size:0.84rem; color:var(--muted); margin-bottom:12px;">Pilih metode ambil/kirim lalu lanjut checkout WhatsApp.</p>
+            <div id="cartList"></div>
+
+            <div style="margin-top:14px;">
+                <label style="font-size:0.85rem; font-weight:700; display:block; margin-bottom:4px;">Metode Penerimaan</label>
+                <select id="wilayah" onchange="renderCart()" style="margin-bottom:10px;">
+                    <option value="pickup" data-tarif="0">Ambil Langsung di Toko (Gratis Ongkir)</option>
+                    <option value="jawa" data-tarif="15000" selected>Kirim Pulau Jawa (Rp 15.000/kg)</option>
+                    <option value="sumatera" data-tarif="28000">Kirim Sumatera / Bali (Rp 28.000/kg)</option>
+                    <option value="kalimantan" data-tarif="35000">Kirim Kalimantan / Sulawesi (Rp 35.000/kg)</option>
+                </select>
+                <div class="summary-line"><span>Total Berat</span><strong id="beratTotal">0 g</strong></div>
+                <div class="summary-line"><span>Subtotal</span><strong id="subtotalText">Rp 0</strong></div>
+                <div class="summary-line"><span>Est. Ongkir</span><strong id="ongkirText">Rp 0</strong></div>
+                <div class="total-line"><span>Total Bayar</span><span id="grandTotalText">Rp 0</span></div>
+                <button type="button" class="btn btn-green" style="width:100%; padding:12px; margin-top:12px; font-size:0.95rem;" onclick="lanjutCheckout()">Checkout via WhatsApp &rarr;</button>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<div class="modal-bg" id="detailModal" onclick="if(event.target===this) tutupModal()">
+    <div class="modal-card">
+        <img id="mImg" src="" alt="Detail Produk">
+        <div class="modal-body">
+            <span class="prod-cat" id="mCat"></span>
+            <h3 id="mTitle" style="margin:6px 0; font-size:1.2rem;"></h3>
+            <p id="mDesc" style="font-size:0.9rem; color:var(--muted); margin-bottom:10px;"></p>
+            <div class="price" id="mPrice" style="font-size:1.15rem; margin-bottom:12px;"></div>
+            <label style="font-size:0.84rem; font-weight:700; display:block; margin-bottom:4px;">Catatan Item (Opsional)</label>
+            <input type="text" id="mNote" placeholder="Contoh: Tambah pipet cadangan / packing ekstra" style="margin-bottom:14px;">
+            <div style="display:flex; gap:8px; justify-content:flex-end;">
+                <button type="button" class="btn btn-soft" onclick="tutupModal()">Tutup</button>
+                <button type="button" class="btn btn-green" id="mAddBtn">+ Masukkan Keranjang</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const KURS_USD = 16000;
+const defaultProduk = [
+    { id: "p1", kategori: "Suplemen Cair", nama: "Suplemen Cair Ternak Ayam 15ml", harga: 135000, beratGram: 120, stok: 24, img: "3.jpeg", desc: "Suplemen tetes 15ml untuk daya tahan tubuh, stamina optimal, dan pertumbuhan ternak ayam." },
+    { id: "p2", kategori: "Obat & Stamina", nama: "Obat Ayam Full Power (100 Tablet)", harga: 95000, beratGram: 150, stok: 35, img: "2.jpeg", desc: "Tablet bersegel untuk membantu mengatasi penyakit, memulihkan kondisi, dan menjaga stamina ternak." },
+    { id: "p3", kategori: "Vitamin Tablet", nama: "Suplemen Ternak Ayam (12 Tablet)", harga: 45000, beratGram: 80, stok: 30, img: "1.jpeg", desc: "Tablet suplemen untuk daya tahan tubuh, pertumbuhan, dan produktivitas ayam agar lebih sehat dan tangguh." },
+    { id: "p4", kategori: "Calcium & B-Complex", nama: "Calcium + B-Complex (Avibone 10 Kapsul)", harga: 80000, beratGram: 100, stok: 28, img: "4.jpeg", desc: "Membantu mencegah penyakit pada ayam, meningkatkan daya tahan tubuh, dan mempercepat kesembuhan." }
+];
+
+let kategoriAktif = "Semua";
+
+function getProdukList() {
+    const saved = JSON.parse(localStorage.getItem("jf_products_v2") || "null");
+    if (!saved) { localStorage.setItem("jf_products_v2", JSON.stringify(defaultProduk)); return defaultProduk; }
+    return saved;
+}
+function getPhotosOverride() { return JSON.parse(localStorage.getItem("jf_custom_photos") || "{}"); }
+function formatHarga(rp) {
+    return (localStorage.getItem("jf_currency") || "IDR") === "USD" ? "$" + (rp / KURS_USD).toFixed(2) : "Rp " + rp.toLocaleString("id-ID");
+}
+function toggleCurrency() {
+    localStorage.setItem("jf_currency", (localStorage.getItem("jf_currency") || "IDR") === "IDR" ? "USD" : "IDR");
+    renderCatalog(); renderCart();
+}
+function getCart() { return JSON.parse(localStorage.getItem("jf_cart") || "[]"); }
+function saveCart(cart) { localStorage.setItem("jf_cart", JSON.stringify(cart)); renderCart(); }
+
+function tambahItem(id, catatan = "") {
+    const prod = getProdukList().find(p => p.id === id);
+    if (!prod) return;
+    const cart = getCart();
+    const ada = cart.find(i => i.id === id);
+    if (ada) { ada.qty += 1; if (catatan) ada.catatan = catatan; }
+    else cart.push({ id: prod.id, nama: prod.nama, harga: prod.harga, beratGram: prod.beratGram, qty: 1, catatan });
+    saveCart(cart);
+}
+function ubahQty(id, delta) {
+    const cart = getCart().map(i => i.id === id ? { ...i, qty: i.qty + delta } : i).filter(i => i.qty > 0);
+    saveCart(cart);
+}
+
+function bukaModal(id) {
+    const prod = getProdukList().find(p => p.id === id);
+    if (!prod) return;
+    const photos = getPhotosOverride();
+    document.getElementById("mImg").src = photos[prod.id] || prod.img;
+    document.getElementById("mCat").textContent = prod.kategori;
+    document.getElementById("mTitle").textContent = prod.nama;
+    document.getElementById("mDesc").textContent = prod.desc;
+    document.getElementById("mPrice").textContent = `${formatHarga(prod.harga)} • Berat ${prod.beratGram}g`;
+    document.getElementById("mNote").value = "";
+    document.getElementById("mAddBtn").onclick = () => {
+        tambahItem(prod.id, document.getElementById("mNote").value.trim());
+        tutupModal();
+    };
+    document.getElementById("detailModal").classList.add("open");
+}
+function tutupModal() { document.getElementById("detailModal").classList.remove("open"); }
+
+function renderCatalog() {
+    const list = getProdukList();
+    const photos = getPhotosOverride();
+    const cats = ["Semua", ...new Set(list.map(p => p.kategori))];
+    document.getElementById("catChips").innerHTML = cats.map(c =>
+        `<button type="button" class="chip ${c === kategoriAktif ? 'active' : ''}" onclick="kategoriAktif='${c}'; renderCatalog();">${c}</button>`
+    ).join("");
+
+    const q = document.getElementById("searchInput").value.toLowerCase();
+    const filtered = list.filter(p => (kategoriAktif === "Semua" || p.kategori === kategoriAktif) && (p.nama.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q)));
+
+    document.getElementById("catalogGrid").innerHTML = filtered.map(p => `
+        <div class="prod-card">
+            <img src="${photos[p.id] || p.img}" alt="${p.nama}" onclick="bukaModal('${p.id}')">
+            <div class="prod-body">
+                <span class="prod-cat">${p.kategori}</span>
+                <div class="prod-title" onclick="bukaModal('${p.id}')">${p.nama}</div>
+                <div class="prod-desc">${p.desc.slice(0, 78)}...</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; padding-top:8px; border-top:1px solid #efece4;">
+                    <span class="price">${formatHarga(p.harga)}</span>
+                    <div>
+                        <button type="button" class="btn btn-soft" onclick="bukaModal('${p.id}')">Detail</button>
+                        <button type="button" class="btn btn-green" onclick="tambahItem('${p.id}')">+ Tambah</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join("");
+}
+
+function renderCart() {
+    const cart = getCart();
+    const totalQty = cart.reduce((a, b) => a + b.qty, 0);
+    document.getElementById("navCartLink").textContent = `Keranjang (${totalQty})`;
+    document.getElementById("currToggle").textContent = (localStorage.getItem("jf_currency") || "IDR") === "IDR" ? "IDR (Rp)" : "USD ($)";
+
+    document.getElementById("cartList").innerHTML = cart.length === 0
+        ? `<p style="color:var(--muted); font-size:0.88rem;">Keranjang masih kosong. Klik <strong>+ Tambah</strong> pada produk di sebelah kiri.</p>`
+        : cart.map(item => `
+            <div class="cart-item">
+                <div style="max-width:190px;">
+                    <strong style="font-size:0.9rem;">${item.nama}</strong><br>
+                    <small style="color:#b4690e; font-weight:700;">${formatHarga(item.harga * item.qty)}</small>
+                    ${item.catatan ? `<div style="font-size:0.76rem; color:var(--muted);">Catatan: ${item.catatan}</div>` : ""}
+                </div>
+                <div>
+                    <button type="button" class="btn btn-qty" onclick="ubahQty('${item.id}', -1)">-</button>
+                    <span style="margin:0 6px; font-weight:700; font-size:0.9rem;">${item.qty}</span>
+                    <button type="button" class="btn btn-qty" onclick="ubahQty('${item.id}', 1)">+</button>
+                </div>
+            </div>
+        `).join("");
+
+    const subtotal = cart.reduce((acc, i) => acc + i.harga * i.qty, 0);
+    const totalGram = cart.reduce((acc, i) => acc + i.beratGram * i.qty, 0);
+    const sel = document.getElementById("wilayah");
+    const tarif = parseInt(sel.options[sel.selectedIndex].dataset.tarif, 10);
+    const kg = totalGram === 0 ? 0 : Math.max(1, Math.ceil(totalGram / 1000));
+    const ongkir = tarif === 0 ? 0 : kg * tarif;
+    const grandTotal = subtotal + ongkir;
+
+    document.getElementById("beratTotal").textContent = `${totalGram} g (${kg} kg)`;
+    document.getElementById("subtotalText").textContent = formatHarga(subtotal);
+    document.getElementById("ongkirText").textContent = formatHarga(ongkir);
+    document.getElementById("grandTotalText").textContent = formatHarga(grandTotal);
+    localStorage.setItem("jf_order_summary", JSON.stringify({ wilayah: sel.options[sel.selectedIndex].text, subtotal, ongkir, grandTotal, totalGram }));
+}
+
+function lanjutCheckout() {
+    if (getCart().length === 0) { alert("Tambahkan minimal 1 obat ke keranjang terlebih dahulu."); return; }
+    window.location.href = "checkout.html";
+}
+
+renderCatalog();
+renderCart();
+</script>
+</body>
+</html>

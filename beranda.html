@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jagoan Farma — Obat, Vitamin & Suplemen Unggas Original</title>
+    <style>
+        :root {
+            --bg: #f6f4ef; --surface: #ffffff; --ink: #172521; --muted: #5b6863;
+            --accent: #1e4d3b; --accent-dark: #133327; --accent-soft: #e6efe9;
+            --gold: #c88a2b; --gold-soft: #fdf3e2; --border: #e3dfd5;
+            --shadow: 0 10px 28px rgba(23, 37, 33, 0.06);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.65; }
+        a { color: inherit; text-decoration: none; }
+
+        .promo-bar {
+            background: var(--accent-dark); color: #f4efe4; text-align: center;
+            font-size: 0.84rem; padding: 8px 14px; font-weight: 600;
+        }
+        .promo-bar span { color: #f0be6b; }
+
+        .wrap { max-width: 1100px; margin: 0 auto; padding: 20px 18px 64px; }
+        .topbar {
+            display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px;
+            padding: 14px 20px; background: var(--surface); border: 1px solid var(--border);
+            border-radius: 18px; margin-bottom: 22px; box-shadow: var(--shadow);
+        }
+        .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 1.22rem; color: var(--accent); }
+        .brand-badge {
+            width: 34px; height: 34px; border-radius: 10px; background: var(--accent); color: #fff;
+            display: grid; place-items: center; font-weight: 900; font-size: 0.95rem;
+        }
+        .brand span { color: var(--gold); }
+        .nav { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+        .nav a { padding: 7px 13px; border-radius: 999px; font-size: 0.89rem; font-weight: 600; color: var(--muted); transition: 0.2s; }
+        .nav a:hover, .nav a.active { background: var(--accent-soft); color: var(--accent); }
+        .curr-btn {
+            padding: 6px 12px; border-radius: 999px; border: 1px solid var(--gold);
+            background: var(--gold-soft); color: #8c5a10; font-weight: 800; font-size: 0.82rem; cursor: pointer;
+        }
+
+        .hero {
+            position: relative; overflow: hidden; border-radius: 24px; margin-bottom: 24px;
+            background: linear-gradient(105deg, rgba(19, 51, 39, 0.94) 0%, rgba(30, 77, 59, 0.82) 58%, rgba(23, 37, 33, 0.65) 100%),
+                        url('https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=1300&q=80') center/cover no-repeat;
+            color: #fff; padding: 44px 34px; box-shadow: var(--shadow);
+        }
+        .hero-tag {
+            display: inline-block; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.25);
+            padding: 5px 13px; border-radius: 999px; font-size: 0.8rem; font-weight: 700; margin-bottom: 14px; color: #f6d594;
+        }
+        .hero h1 { font-size: clamp(1.7rem, 3.4vw, 2.5rem); line-height: 1.18; max-width: 650px; margin-bottom: 12px; }
+        .hero p { color: #e2ede7; max-width: 600px; margin-bottom: 22px; font-size: 0.98rem; }
+        .btn { display: inline-flex; align-items: center; gap: 6px; padding: 11px 18px; border-radius: 12px; font-weight: 700; font-size: 0.92rem; border: none; cursor: pointer; transition: 0.2s; }
+        .btn-gold { background: var(--gold); color: #fff; margin-right: 8px; }
+        .btn-gold:hover { background: #b27820; }
+        .btn-light { background: #fff; color: var(--accent); }
+        .btn-green { background: var(--accent); color: #fff; }
+
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 28px; }
+        .card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 20px; box-shadow: var(--shadow); }
+        .card-icon {
+            width: 40px; height: 40px; border-radius: 12px; background: var(--accent-soft); color: var(--accent);
+            display: grid; place-items: center; font-weight: 800; margin-bottom: 10px;
+        }
+        .card h3 { font-size: 1.05rem; margin-bottom: 6px; color: var(--accent); }
+        .card p { font-size: 0.9rem; color: var(--muted); }
+
+        .section-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
+        .section-head h2 { font-size: 1.35rem; color: var(--accent); }
+        .prod-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; margin-bottom: 28px; }
+        .prod-card {
+            background: var(--surface); border: 1px solid var(--border); border-radius: 18px; overflow: hidden;
+            display: flex; flex-direction: column; box-shadow: var(--shadow);
+        }
+        .prod-card img { width: 100%; height: 165px; object-fit: cover; background: #eae6dc; }
+        .prod-body { padding: 15px; display: flex; flex-direction: column; flex: 1; }
+        .prod-cat { font-size: 0.74rem; font-weight: 800; color: var(--accent); background: var(--accent-soft); padding: 3px 9px; border-radius: 999px; width: fit-content; margin-bottom: 7px; }
+        .prod-title { font-weight: 800; font-size: 1rem; margin-bottom: 4px; }
+        .prod-desc { font-size: 0.84rem; color: var(--muted); margin-bottom: 12px; flex: 1; }
+        .prod-foot { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding-top: 10px; border-top: 1px solid #efece4; }
+        .price { font-weight: 800; color: #b4690e; font-size: 1rem; }
+
+        .plugin-box { background: var(--surface); border: 2px solid #e5d2ad; border-radius: 22px; padding: 26px; box-shadow: var(--shadow); }
+        .pill-gold { display: inline-block; background: var(--gold-soft); color: #9c6615; padding: 4px 12px; border-radius: 999px; font-size: 0.78rem; font-weight: 800; margin-bottom: 10px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin: 14px 0 18px; }
+        label { display: block; font-weight: 700; font-size: 0.88rem; margin-bottom: 5px; }
+        select, input { width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid #d5cfc2; font-size: 0.95rem; background: #fcfbf8; }
+        .result { margin-top: 18px; padding: 18px; border-radius: 16px; background: #f2f7f4; border: 1px solid #c9dfd2; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+        .result img { width: 92px; height: 92px; border-radius: 14px; object-fit: cover; }
+        .toast { margin-top: 8px; font-size: 0.88rem; font-weight: 700; color: var(--accent); min-height: 20px; }
+    </style>
+</head>
+<body>
+<div class="promo-bar">
+    100% Produk Original & Tersegel • Konsultasi & Order Cepat via WhatsApp • <span>Gratis Spuit Takar Setiap Pembelian Paket Laga</span>
+</div>
+
+<div class="wrap">
+    <header class="topbar">
+        <a href="beranda.html" class="brand">
+            <div class="brand-badge">JF</div>
+            <div>JAGOAN<span>FARMA</span></div>
+        </a>
+        <nav class="nav">
+            <a href="beranda.html" class="active">Beranda</a>
+            <a href="katalog.html">Katalog Obat</a>
+            <a href="panduan_rawatan.html">Rawatan & Luka</a>
+            <a href="informasi_penyakit.html">Penyakit & Nutrisi</a>
+            <a href="checkout.html" id="navCartLink">Keranjang (0)</a>
+            <button type="button" class="curr-btn" id="currToggle" onclick="toggleCurrency()">IDR (Rp)</button>
+        </nav>
+    </header>
+
+    <section class="hero" id="heroBanner">
+        <div class="hero-tag">APOTEK & NUTRISI AYAM PETARUNG TERPERCAYA</div>
+        <h1>Obat, Vitamin & Suplemen Ayam Petarung Original</h1>
+        <p>Kesiapan fisik ayam petarung dibentuk lewat rawatan terukur, pencegahan penyakit yang tepat, dan suplemen berkualitas. Cek dosis akurat lalu pesan langsung via WhatsApp.</p>
+        <a href="katalog.html" class="btn btn-gold">Jelajahi Katalog Obat</a>
+        <a href="checkout.html" class="btn btn-light">Keranjang & Checkout</a>
+    </section>
+
+    <div class="grid-3">
+        <div class="card">
+            <div class="card-icon">✓</div>
+            <h3>100% Produk Original</h3>
+            <p>Segel utuh, cetakan batch dan kedaluwarsa jelas, serta pengemasan aman berlapis bubble wrap.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">⚖</div>
+            <h3>Takaran Sesuai Bobot</h3>
+            <p>Kalkulator dosis otomatis menghitung takaran berdasarkan berat badan unggas dan fase rawatan.</p>
+        </div>
+        <div class="card">
+            <div class="card-icon">WA</div>
+            <h3>Checkout Langsung WhatsApp</h3>
+            <p>Bisa pilih Ambil di Toko atau Kirim Ekspedisi, berat & ongkir terhitung otomatis dalam satu klik.</p>
+        </div>
+    </div>
+
+    <div class="section-head">
+        <div>
+            <h2>Produk Unggulan & Paling Dicari</h2>
+            <p style="font-size:0.9rem; color:var(--muted);">Klik <strong>+ Tambah</strong> untuk langsung memasukkan obat ke keranjang belanja Anda.</p>
+        </div>
+        <a href="katalog.html" style="font-weight:700; color:var(--accent);">Lihat Semua Katalog &rarr;</a>
+    </div>
+    <div class="prod-grid" id="featuredGrid"></div>
+
+    <section class="plugin-box">
+        <span class="pill-gold">PLUGIN KALKULATOR DOSIS & REKOMENDASI</span>
+        <h2>Cek Takaran Dosis Sebelum Order</h2>
+        <div class="form-grid">
+            <div>
+                <label for="kondisi">Kondisi / Kebutuhan</label>
+                <select id="kondisi">
+                    <option value="stamina">Stamina & Nafas Laga</option>
+                    <option value="ngorok">Pemulihan Kondisi & Stamina</option>
+                    <option value="vitamin">Suplemen Daya Tahan & Pertumbuhan</option>
+                    <option value="kalsium">Calcium + B-Complex (Kesembuhan & Daya Tahan)</option>
+                </select>
+            </div>
+            <div>
+                <label for="berat">Berat Unggas (kg)</label>
+                <input type="number" id="berat" value="2.8" min="0.5" max="6" step="0.1">
+            </div>
+            <div>
+                <label for="fase">Fase Pemakaian</label>
+                <select id="fase">
+                    <option value="harian">Rawatan Harian</option>
+                    <option value="laga">Persiapan / Hari Laga</option>
+                    <option value="pemulihan">Pemulihan / Pengobatan</option>
+                </select>
+            </div>
+        </div>
+        <button type="button" class="btn btn-green" onclick="hitungDosis()">Hitung Dosis</button>
+        <div class="result">
+            <img id="fotoObat" src="3.jpeg" alt="Obat Unggas">
+            <div style="flex:1; min-width:230px;">
+                <h3 id="namaObat" style="color:#1e4d3b; margin-bottom:4px;">Suplemen Cair Ternak Ayam 15ml</h3>
+                <p id="penjelasanDosis">Untuk berat <strong>2.8 kg</strong> pada fase <strong>Rawatan Harian</strong>: berikan sekitar <strong>3 tetes</strong> pagi hari setelah dijemur.</p>
+                <div class="price" id="hargaObat" style="margin:8px 0 10px;">Rp 135.000</div>
+                <button type="button" class="btn btn-gold" onclick="tambahRekomendasiKeKeranjang()">+ Tambah ke Keranjang</button>
+                <a href="katalog.html" style="margin-left:10px; font-weight:700; color:#1e4d3b;">Buka Katalog &rarr;</a>
+                <div class="toast" id="toastMsg"></div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+const KURS_USD = 16000;
+const defaultProduk = [
+    {
+        id: "p1", kategori: "Suplemen Cair", nama: "Suplemen Cair Ternak Ayam 15ml", harga: 135000, beratGram: 120, stok: 24,
+        img: "3.jpeg",
+        desc: "Suplemen tetes 15ml untuk daya tahan tubuh, stamina optimal, dan pertumbuhan ternak ayam."
+    },
+    {
+        id: "p2", kategori: "Obat & Stamina", nama: "Obat Ayam Full Power (100 Tablet)", harga: 95000, beratGram: 150, stok: 35,
+        img: "2.jpeg",
+        desc: "Tablet bersegel untuk membantu mengatasi penyakit, memulihkan kondisi, dan menjaga stamina ternak."
+    },
+    {
+        id: "p3", kategori: "Vitamin Tablet", nama: "Suplemen Ternak Ayam (12 Tablet)", harga: 45000, beratGram: 80, stok: 30,
+        img: "1.jpeg",
+        desc: "Tablet suplemen untuk daya tahan tubuh, pertumbuhan, dan produktivitas ayam agar lebih sehat dan tangguh."
+    },
+    {
+        id: "p4", kategori: "Calcium & B-Complex", nama: "Calcium + B-Complex (Avibone 10 Kapsul)", harga: 80000, beratGram: 100, stok: 28,
+        img: "4.jpeg",
+        desc: "Membantu mencegah penyakit pada ayam, meningkatkan daya tahan tubuh, dan mempercepat kesembuhan."
+    }
+];
+
+function getProdukList() {
+    const saved = JSON.parse(localStorage.getItem("jf_products_v2") || "null");
+    if (!saved) {
+        localStorage.setItem("jf_products_v2", JSON.stringify(defaultProduk));
+        return defaultProduk;
+    }
+    return saved;
+}
+
+function getPhotosOverride() {
+    return JSON.parse(localStorage.getItem("jf_custom_photos") || "{}");
+}
+
+function formatHarga(rp) {
+    const curr = localStorage.getItem("jf_currency") || "IDR";
+    if (curr === "USD") return "$" + (rp / KURS_USD).toFixed(2);
+    return "Rp " + rp.toLocaleString("id-ID");
+}
+
+function toggleCurrency() {
+    const curr = localStorage.getItem("jf_currency") || "IDR";
+    localStorage.setItem("jf_currency", curr === "IDR" ? "USD" : "IDR");
+    renderAll();
+}
+
+function updateBadgeCart() {
+    const cart = JSON.parse(localStorage.getItem("jf_cart") || "[]");
+    const totalQty = cart.reduce((a, b) => a + b.qty, 0);
+    document.getElementById("navCartLink").textContent = `Keranjang (${totalQty})`;
+    document.getElementById("currToggle").textContent = (localStorage.getItem("jf_currency") || "IDR") === "IDR" ? "IDR (Rp)" : "USD ($)";
+}
+
+function tambahKeKeranjangById(id) {
+    const list = getProdukList();
+    const item = list.find(p => p.id === id);
+    if (!item) return;
+    const cart = JSON.parse(localStorage.getItem("jf_cart") || "[]");
+    const found = cart.find(c => c.id === id);
+    if (found) found.qty += 1;
+    else cart.push({ id: item.id, nama: item.nama, harga: item.harga, beratGram: item.beratGram, qty: 1, catatan: "" });
+    localStorage.setItem("jf_cart", JSON.stringify(cart));
+    updateBadgeCart();
+}
+
+function renderFeatured() {
+    const photos = getPhotosOverride();
+    if (photos.hero) {
+        document.getElementById("heroBanner").style.backgroundImage =
+            `linear-gradient(105deg, rgba(19, 51, 39, 0.94) 0%, rgba(30, 77, 59, 0.82) 58%, rgba(23, 37, 33, 0.65) 100%), url('${photos.hero}')`;
+    }
+    const list = getProdukList().slice(0, 4);
+    document.getElementById("featuredGrid").innerHTML = list.map(p => {
+        const imgSrc = photos[p.id] || p.img;
+        return `
+            <div class="prod-card">
+                <img src="${imgSrc}" alt="${p.nama}">
+                <div class="prod-body">
+                    <span class="prod-cat">${p.kategori}</span>
+                    <div class="prod-title">${p.nama}</div>
+                    <div class="prod-desc">${p.desc}</div>
+                    <div class="prod-foot">
+                        <span class="price">${formatHarga(p.harga)}</span>
+                        <button type="button" class="btn btn-green" style="padding:7px 12px; font-size:0.84rem;" onclick="tambahKeKeranjangById('${p.id}'); this.textContent='✓ Ditambah'; setTimeout(()=>this.textContent='+ Tambah', 900);">+ Tambah</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }).join("");
+}
+
+const aturanDosis = {
+    stamina: { id: "p1", aturan: (kg, fase) => fase === "laga" ? `Berikan sekitar <strong>${Math.max(4, Math.round(kg * 1.8))} tetes</strong> langsung ke paruh 30 menit sebelum laga (${kg} kg).` : `Berikan sekitar <strong>${Math.max(2, Math.round(kg * 1))} tetes</strong> pagi hari setelah dijemur (${kg} kg).` },
+    ngorok: { id: "p2", aturan: (kg, fase) => `Fase <strong>${fase}</strong>: berikan <strong>${kg >= 2.5 ? "1 tablet" : "1/2 tablet"}</strong> sesuai aturan pakai selama 3–5 hari (${kg} kg), isolasi ayam bergejala.` },
+    vitamin: { id: "p3", aturan: (kg, fase) => `Fase <strong>${fase}</strong>: berikan <strong>${kg >= 2.5 ? "1 tablet" : "1/2 tablet"}</strong> tiap 2 hari untuk daya tahan & pertumbuhan (${kg} kg).` },
+    kalsium: { id: "p4", aturan: (kg, fase) => `Fase <strong>${fase}</strong>: berikan <strong>${kg >= 2.5 ? "1 kapsul" : "1/2 kapsul"}</strong>/hari untuk membantu kesembuhan & daya tahan tubuh (${kg} kg).` }
+};
+let aktifId = "p1";
+
+function hitungDosis() {
+    const key = document.getElementById("kondisi").value;
+    const berat = parseFloat(document.getElementById("berat").value) || 2.5;
+    const fase = document.getElementById("fase").value;
+    const cfg = aturanDosis[key];
+    aktifId = cfg.id;
+    const prod = getProdukList().find(p => p.id === aktifId) || defaultProduk[0];
+    const photos = getPhotosOverride();
+    document.getElementById("fotoObat").src = photos[prod.id] || prod.img;
+    document.getElementById("namaObat").textContent = prod.nama;
+    document.getElementById("penjelasanDosis").innerHTML = cfg.aturan(berat, fase);
+    document.getElementById("hargaObat").textContent = formatHarga(prod.harga);
+    document.getElementById("toastMsg").textContent = "";
+}
+
+function tambahRekomendasiKeKeranjang() {
+    tambahKeKeranjangById(aktifId);
+    document.getElementById("toastMsg").textContent = "✓ Masuk ke keranjang belanja!";
+}
+
+function renderAll() {
+    updateBadgeCart();
+    renderFeatured();
+    hitungDosis();
+}
+renderAll();
+</script>
+</body>
+</html>
